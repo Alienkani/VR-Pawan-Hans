@@ -9,25 +9,27 @@ public class CsvReadWrite : Singleton<CsvReadWrite>
 {
 
     public List<string[]> rowDataScore = new List<string[]>();
-    
+    [SerializeField]
+    string fileName,FieldName;
     string folderPathScore;
     string filePath_Score;
-
+    [SerializeField]
+    int caseType;
 
     // Use this for initialization
     void Start()
     {
         folderPathScore = getPath();
         
-        filePath_Score = folderPathScore + "Score.csv";
+        filePath_Score = folderPathScore + fileName+".csv";
        
-        StartCoroutine(CreateOrEditScore("Name","CaseAScore","CaseBScore","CaseCScore"));
+        StartCoroutine(CreateOrEditScore("Name",FieldName));
         
     }
 
-    public void SaveScore(string name,string caseAScore, string caseBScore, string caseCScore)
+    public void SaveScore(string name,string score)
     {
-        StartCoroutine(CreateOrEditScore(name,caseAScore, caseBScore, caseCScore));
+        StartCoroutine(CreateOrEditScore(name,score));
     }
 
     
@@ -35,15 +37,14 @@ public class CsvReadWrite : Singleton<CsvReadWrite>
     /// If file exist edit the data or if not create a new file
     /// </summary>
     /// <returns></returns>
-    IEnumerator CreateOrEditScore(string pname,string caseAScore,string caseBScore,string caseCScore)
+    IEnumerator CreateOrEditScore(string pname,string score)
     {
 
         // Creating First row of titles manually..
-        string[] rowDataTemp = new string[4];
+        string[] rowDataTemp = new string[2];
         rowDataTemp[0] = pname;
-        rowDataTemp[1] = caseAScore;
-        rowDataTemp[2] = caseBScore;
-        rowDataTemp[3] = caseCScore;
+        rowDataTemp[1] = score;
+       
         
 
 
@@ -100,9 +101,7 @@ public class CsvReadWrite : Singleton<CsvReadWrite>
                 string[] row = rowDataScore[i];
                 if(row[0]==pname)
                 {
-                    row[1] = caseAScore;
-                    row[2] = caseBScore;
-                    row[3] = caseCScore;
+                    row[1] = score;
                     rowDataScore[i] = row;
                     alreayexist = true;
 
@@ -140,9 +139,10 @@ public class CsvReadWrite : Singleton<CsvReadWrite>
     // Following method is used to retrive the relative path as device platform
     private string getPath()
     {
-        
+        if(caseType==1)
+        {
 #if UNITY_EDITOR
-            return Application.dataPath + "/CSV_Score/";
+            return Application.dataPath + "/Score_CaseA/";
 #elif UNITY_ANDROID
         return Application.persistentDataPath + "/CSV_Score/";
 #elif UNITY_IPHONE
@@ -150,9 +150,39 @@ public class CsvReadWrite : Singleton<CsvReadWrite>
 #else
         return Application.dataPath +"/"+"Saved_data.csv";
 #endif
-        
-        
-       
+        }
+        else if(caseType==2)
+        {
+#if UNITY_EDITOR
+            return Application.dataPath + "/Score_CaseB/";
+#elif UNITY_ANDROID
+        return Application.persistentDataPath + "/CSV_Score/";
+#elif UNITY_IPHONE
+        return Application.persistentDataPath+"/"+"Saved_data.csv";
+#else
+        return Application.dataPath +"/"+"Saved_data.csv";
+#endif
+        }
+        else if(caseType==3)
+        {
+#if UNITY_EDITOR
+            return Application.dataPath + "/Score_CaseC/";
+#elif UNITY_ANDROID
+        return Application.persistentDataPath + "/CSV_Score/";
+#elif UNITY_IPHONE
+        return Application.persistentDataPath+"/"+"Saved_data.csv";
+#else
+        return Application.dataPath +"/"+"Saved_data.csv";
+#endif
+        }
+        else
+        {
+            return "";
+        }
+
+
+
+
 
     }
 }

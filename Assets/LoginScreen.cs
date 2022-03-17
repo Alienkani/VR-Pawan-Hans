@@ -60,24 +60,7 @@ public class LoginScreen : MonoBehaviour
 
     public void OnContinue()
     {
-        Globals.CaseAScore = "0";
-        Globals.CaseBScore = "0";
-        Globals.CaseCScore = "0";
-        if(PlayerPrefs.HasKey("id"))
-        {
-            int playerCount = PlayerPrefs.GetInt("id");
-            Globals.name = "Player " + playerCount;
-
-        }
-        else
-        {
-            PlayerPrefs.SetInt("id", 1);
-            Globals.name = "Player " + 1;
-        }
-
-
-
-        CsvReadWrite.instance.SaveScore(Globals.name, Globals.CaseAScore, Globals.CaseBScore, Globals.CaseCScore);
+       
 
         ManageState(LoginScreen_States.SwitchScene);
         OnStateChange();

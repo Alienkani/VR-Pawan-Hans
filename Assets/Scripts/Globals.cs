@@ -4,10 +4,7 @@ using System.Collections.Generic;
 public static class Globals
 {
    
-    public static string CaseAScore;
-    public static string CaseBScore;
-
-    public static string CaseCScore;
+    public static string Score;
     public static string name;
 
 
@@ -24,7 +21,6 @@ enum LoginScreen_States
 enum LandingScreen_States
 {
     Idle,
-    PanelOpen,
     SwitchScene
 }
 

@@ -15,6 +15,13 @@ public class OptionTwo_Scene : MonoBehaviour
     }
 
     // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.KeypadEnter))
+        {
+            OnEndScene();
+        }
+    }
 
     void ManageState(OptionTwo_States state)
     {
@@ -66,5 +73,12 @@ public class OptionTwo_Scene : MonoBehaviour
     {
         ManageState(OptionTwo_States.SwitchScene);
         OnStateChange();
+    }
+    public void OnEndScene()
+    {
+        if (ScoreBoard.instance)
+        {
+            ScoreBoard.instance.CalculateScoreA();
+        }
     }
 }
