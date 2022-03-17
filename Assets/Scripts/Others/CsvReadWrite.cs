@@ -9,45 +9,41 @@ public class CsvReadWrite : Singleton<CsvReadWrite>
 {
 
     public List<string[]> rowDataScore = new List<string[]>();
-    public List<string[]> rowDataAnalytics = new List<string[]>();
-    string folderPathScore,folderPathAnalytics;
-    string filePath_Score,filePath_Analytics;
+    
+    string folderPathScore;
+    string filePath_Score;
 
 
     // Use this for initialization
     void Start()
     {
-        folderPathScore = getPath(csvType.score);
-        folderPathAnalytics = getPath(csvType.analytics);
-
+        folderPathScore = getPath();
+        
         filePath_Score = folderPathScore + "Score.csv";
-        filePath_Analytics = folderPathAnalytics + "Analytics.csv";
-        StartCoroutine(CreateOrEditScore("Name","Id","Score"));
-        StartCoroutine(CreateOrEditAnalytics("Name", "Id", "PBO","CKMF","PMF","CHMF"));// Change field 
+       
+        StartCoroutine(CreateOrEditScore("Name","CaseAScore","CaseBScore","CaseCScore"));
+        
     }
 
-    public void SaveScore(string Name, string Id, string Score)
+    public void SaveScore(string name,string caseAScore, string caseBScore, string caseCScore)
     {
-        StartCoroutine(CreateOrEditScore(Name, Id, Score));
+        StartCoroutine(CreateOrEditScore(name,caseAScore, caseBScore, caseCScore));
     }
 
-    public void SaveAnalytics(string Name, string Id, string PBO,string CKMF,string PMF,string CHMF)
-    {
-        StartCoroutine(CreateOrEditAnalytics(Name, Id,PBO,CKMF,PMF,CHMF));
-    }
-
+    
     /// <summary>
     /// If file exist edit the data or if not create a new file
     /// </summary>
     /// <returns></returns>
-    IEnumerator CreateOrEditScore(string Name,string Id,string Score)
+    IEnumerator CreateOrEditScore(string pname,string caseAScore,string caseBScore,string caseCScore)
     {
 
         // Creating First row of titles manually..
-        string[] rowDataTemp = new string[3];
-        rowDataTemp[0] = Name;
-        rowDataTemp[1] = Id;
-        rowDataTemp[2] = Score;
+        string[] rowDataTemp = new string[4];
+        rowDataTemp[0] = pname;
+        rowDataTemp[1] = caseAScore;
+        rowDataTemp[2] = caseBScore;
+        rowDataTemp[3] = caseCScore;
         
 
 
@@ -102,10 +98,11 @@ public class CsvReadWrite : Singleton<CsvReadWrite>
             for (int i = 0; i < rowDataScore.Count; i++)
             {
                 string[] row = rowDataScore[i];
-                if(row[1]==Id)
+                if(row[0]==pname)
                 {
-                    row[2] = Score;
-                    row[0] = Name;
+                    row[1] = caseAScore;
+                    row[2] = caseBScore;
+                    row[3] = caseCScore;
                     rowDataScore[i] = row;
                     alreayexist = true;
 
@@ -138,115 +135,12 @@ public class CsvReadWrite : Singleton<CsvReadWrite>
 
     }
 
-    IEnumerator CreateOrEditAnalytics(string Name, string Id, string PBO,string CKMF,string PMF,string CHMF)
-    {
-
-        // Creating First row of titles manually..
-        string[] rowDataTemp = new string[6];
-        rowDataTemp[0] = Name;
-        rowDataTemp[1] = Id;
-        rowDataTemp[2] = PBO;
-        rowDataTemp[3] = CKMF;
-        rowDataTemp[4] = PMF;
-        rowDataTemp[5] = CHMF;
-
-
-
-
-        if (!Directory.Exists(folderPathAnalytics))
-        {
-            //Debugger.instance.AddLog("dIRECTORY nOT EXIST Analytics");
-            rowDataAnalytics.Add(rowDataTemp);
-            Directory.CreateDirectory(folderPathAnalytics);
-            while (!Directory.Exists(folderPathAnalytics))
-            {
-                yield return null;
-            }
-
-            string[][] output = new string[rowDataAnalytics.Count][];
-
-            for (int i = 0; i < output.Length; i++)
-            {
-                output[i] = rowDataAnalytics[i];
-            }
-
-            int length = output.GetLength(0);
-            string delimiter = ",";
-
-            StringBuilder sb = new StringBuilder();
-
-            for (int index = 0; index < length; index++)
-                sb.AppendLine(string.Join(delimiter, output[index]));
-
-            StreamWriter outStream = System.IO.File.CreateText(filePath_Analytics);
-            outStream.WriteLine(sb);
-            outStream.Close();
-
-        }
-        else
-        {
-            //Debugger.instance.AddLog("dIRECTORY EXIST Analytics");
-
-            rowDataAnalytics.Clear();
-            string[] lines = File.ReadAllLines(filePath_Analytics);
-            foreach (string line in lines)
-            {
-                if (line.Contains(","))
-                {
-                    string[] filed = line.Split(',');
-                    rowDataAnalytics.Add(filed);
-                    //print(filed[0]);
-                }
-            }
-            //print(rowDataAnalytics.Count);
-            bool alreayexist = false;
-            for (int i = 0; i < rowDataAnalytics.Count; i++)
-            {
-                string[] row = rowDataAnalytics[i];
-                if (row[1] == Id)
-                {
-                    row[2] = PBO;
-                    row[3] = CKMF;
-                    row[4] = PMF;
-                    row[5] = CHMF;
-                    row[0] = Name;
-                    rowDataAnalytics[i] = row;
-                    alreayexist = true;
-
-                }
-            }
-            if (!alreayexist)
-                rowDataAnalytics.Add(rowDataTemp);
-
-            string[][] output = new string[rowDataAnalytics.Count][];
-
-            for (int i = 0; i < output.Length; i++)
-            {
-                output[i] = rowDataAnalytics[i];
-            }
-
-            int length = output.GetLength(0);
-            string delimiter = ",";
-
-            StringBuilder sb = new StringBuilder();
-
-            for (int index = 0; index < length; index++)
-                sb.AppendLine(string.Join(delimiter, output[index]));
-
-            StreamWriter myStream = new StreamWriter(filePath_Analytics, false);
-            myStream.Write(sb);
-            myStream.Close();
-
-        }
-        yield return new WaitForEndOfFrame();
-
-    }
+   
 
     // Following method is used to retrive the relative path as device platform
-    private string getPath(csvType type)
+    private string getPath()
     {
-        if(type==csvType.score)
-        {
+        
 #if UNITY_EDITOR
             return Application.dataPath + "/CSV_Score/";
 #elif UNITY_ANDROID
@@ -256,29 +150,10 @@ public class CsvReadWrite : Singleton<CsvReadWrite>
 #else
         return Application.dataPath +"/"+"Saved_data.csv";
 #endif
-        }
-        else if(type==csvType.analytics)
-        {
-#if UNITY_EDITOR
-            return Application.dataPath + "/CSV_Analytics/";
-#elif UNITY_ANDROID
-        return Application.persistentDataPath + "/CSV_Analytics/";
-#elif UNITY_IPHONE
-        return Application.persistentDataPath+"/"+"Saved_data.csv";
-#else
-        return Application.dataPath +"/"+"Saved_data.csv";
-#endif
-        }
-        else
-        {
-            return "none";
-        }
+        
+        
+       
 
     }
 }
-enum  csvType
-{
-    score,
-    analytics
 
-}

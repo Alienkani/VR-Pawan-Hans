@@ -6,17 +6,20 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/LoginScene.unity
+    path: Assets/Scenes/LoginScreen.unity
+    guid: 252617b436e3e4243988461903b8a1be
+  - enabled: 1
+    path: Assets/Scenes/LandingScreen.unity
     guid: 21f8dd43af4dbf2439eb57dbb4a59685
   - enabled: 1
-    path: Assets/Scenes/MainArea.unity
-    guid: 2ceb398ca0f192b4bb1a50664ee11d03
+    path: Assets/Scenes/Option 1.unity
+    guid: 9a5ad885753d60f459ffa8f60aa651d8
   - enabled: 1
-    path: Assets/Scenes/QuizScene.unity
-    guid: 567977a8409d7424aa8d73e08109f360
+    path: Assets/Scenes/Option 2.unity
+    guid: 6b1c10d3a7af48344ae9fec4b8a15a66
   - enabled: 1
-    path: Assets/Scenes/360VideoScene.unity
-    guid: 4ea05d6ab3eb89d47b68c96ad04490aa
+    path: Assets/Scenes/Option 3.unity
+    guid: 80ad2cda721d18d44927a03c4389aacb
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: a70632caff06a0141824984f6fc7c891, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: b3c0de850d08bcf4dbcc051d1a9c23d2, type: 2}
