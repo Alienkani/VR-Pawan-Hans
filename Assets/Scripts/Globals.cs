@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public static class Globals
 {
@@ -12,8 +13,8 @@ public static class Globals
 
 enum LoginScreen_States
 {
-    VoiceOver_Play,
-    VoiceOver_End,
+    Tutorial,
+    Intro,
     SwitchScene
 }
 
@@ -27,9 +28,13 @@ enum LandingScreen_States
 
 enum OptionOne_States
 {
-    Idle,
-    VoiceOver_One,
-    SwitchScene
+    Step1,
+    Step2,
+    Step3,
+    Step4,
+    Step5,
+    Step6,
+    Step7
    
 }
 enum OptionTwo_States
@@ -45,4 +50,26 @@ enum OptionThree_States
     VoiceOver_One,
     SwitchScene
 
+}
+
+[System.Serializable]
+public class Steps
+{
+    public Transform target;
+    public AudioClip[] vO;
+    public string animBoolName;
+    public ActionTypes actionType;
+}
+public enum ActionTypes
+{
+    Step1,
+    Step2,
+    Step3,
+    Step4,
+    Step5,
+    Step6,
+    Step7,
+    Step8,
+    Step9,
+    Step10
 }

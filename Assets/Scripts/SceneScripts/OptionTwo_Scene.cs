@@ -41,7 +41,7 @@ public class OptionTwo_Scene : MonoBehaviour
             case OptionTwo_States.VoiceOver_One:
                 {
                     
-                    SoundManager.instance.PlayVO(Response, 0, true);
+                    //SoundManager.instance.PlayVO(Response, 0, true);
                     break;
                 }
             

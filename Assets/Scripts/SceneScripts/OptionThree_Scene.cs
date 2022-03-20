@@ -41,7 +41,7 @@ public class OptionThree_Scene : MonoBehaviour
             case OptionThree_States.VoiceOver_One:
                 {
 
-                    SoundManager.instance.PlayVO(Response, 0, true);
+                    //SoundManager.instance.PlayVO(Response, 0, true);
                     break;
                 }
 

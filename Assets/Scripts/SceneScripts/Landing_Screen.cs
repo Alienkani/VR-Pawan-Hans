@@ -57,5 +57,17 @@ public class Landing_Screen : MonoBehaviour
         ManageState(LandingScreen_States.SwitchScene);
         sceneIndex = index;
         OnStateChange();
+     
     }
+
+    public void OnHover(GameObject obj)
+    {
+        LeanTween.scale(obj, new Vector3(1.1f, 1.1f, 1.1f), 0.2f);
+    }
+    public void OnExit(GameObject obj)
+    {
+        LeanTween.scale(obj, Vector3.one, 0.2f);
+    }
+
+
 }

@@ -11,8 +11,7 @@ public class SoundManager : Singleton<SoundManager>
 
     [SerializeField]
     AudioSource audiosourceVO;
-    [SerializeField]
-    AudioClip[] voiceOvers;
+   
     public enum AudioClipType {hoverAC,selectedAC };
 
     public void PlaySound(AudioClipType clip)
@@ -43,17 +42,16 @@ public class SoundManager : Singleton<SoundManager>
         }
     }
 
-    public void PlayVO(Action<bool> callback, int index,bool waitForEnd)
+    public void PlayVO(Action<bool> callback, AudioClip clip,bool waitForEnd)
     {
-        StartCoroutine(WaitForVo(callback,index,waitForEnd));
+        StartCoroutine(WaitForVo(callback,clip,waitForEnd));
     }
-    IEnumerator WaitForVo(Action<bool> callback, int index, bool waitForEnd)
+    IEnumerator WaitForVo(Action<bool> callback, AudioClip clip, bool waitForEnd)
     {
-        if(voiceOvers.Length>index)
-        {
+       
             if (audiosourceVO.isPlaying)
                 audiosourceVO.Stop();
-            audiosourceVO.clip = voiceOvers[index];
+            audiosourceVO.clip = clip;
             audiosourceVO.Play();
             if(waitForEnd)
             {
@@ -68,7 +66,7 @@ public class SoundManager : Singleton<SoundManager>
                 callback(false);
             }
             
-        }
+        
         yield return new WaitForEndOfFrame();
     }
 }

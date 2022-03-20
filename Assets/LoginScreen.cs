@@ -6,13 +6,12 @@ using UnityEngine.UI;
 public class LoginScreen : MonoBehaviour
 {
     LoginScreen_States currentState;
-    [SerializeField]
-    GameObject continueBtn;
-    [SerializeField]GameObject PanelIntro;
+    
+    [SerializeField]GameObject PanelIntro,TutorialPanel;
     // Start is called before the first frame update
     void Start()
     {
-        ManageState(LoginScreen_States.VoiceOver_Play);
+        ManageState(LoginScreen_States.Tutorial);
         OnStateChange();
 
     }
@@ -29,32 +28,35 @@ public class LoginScreen : MonoBehaviour
     {
         switch (currentState)
         {
-            case LoginScreen_States.VoiceOver_Play:
+            case LoginScreen_States.Tutorial:
                 {
-                    PanelIntro.SetActive(true);
-                    continueBtn.SetActive(false);
-                    SoundManager.instance.PlayVO(Response, 0, true);
+                    PanelIntro.SetActive(false);
+                    
+                    TutorialPanel.SetActive(true);
+                    //SoundManager.instance.PlayVO(Response, 0, true);
                     break;
                 }
-            case LoginScreen_States.VoiceOver_End:
+            case LoginScreen_States.Intro:
                 {
-
-                    continueBtn.SetActive(true);
+                    PanelIntro.SetActive(true);
+                    
+                    TutorialPanel.SetActive(false);
+                    
                     break;
                 }
             case LoginScreen_States.SwitchScene:
                 {
-                    continueBtn.SetActive(false);
+
                     SceneSwitchManager.instance.SwitchScene(1);
                     break;
                 }
+            
         }
     }
 
-    void Response(bool isvoEnd)
+   public void OnTriggerPress()
     {
-        Debug.Log("Is wait for VO end " + isvoEnd);
-        ManageState(LoginScreen_States.VoiceOver_End);
+        ManageState(LoginScreen_States.Intro);
         OnStateChange();
     }
 
